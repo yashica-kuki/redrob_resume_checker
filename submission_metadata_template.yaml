@@ -30,12 +30,12 @@ github_repo: "https://github.com/yashica-kuki/redrob_resume_checker"
 # Required. Must be reachable. Private repos OK if you can grant organizer
 # access at Stage 3 (the email to add will be communicated then).
 
-sandbox_link: "https://huggingface.co/spaces/YOUR_USERNAME/redrob-ranker"
+sandbox_link: "https://redrobresumechecker-bvc46gpvadpfhcrb7deqgg.streamlit.app/"
 # Required. A working hosted environment where the ranker can be run on a small
 # candidate sample. See Section 10.5 of submission_spec.md for acceptable
 # platforms (HuggingFace Spaces, Streamlit Cloud, Replit, Colab, Docker, Binder).
 
-reproduce_command: "python ranker.py --candidates ./candidates.jsonl --out ./redrob_submission.csv"
+reproduce_command: "python rank.py --candidates input/candidates.jsonl --out output/redrob_submission.csv"
 # The single command that produces submission.csv from candidates.jsonl.
 # Should run end-to-end within 5 minutes on CPU with 16GB RAM and no network.
 
@@ -43,11 +43,11 @@ reproduce_command: "python ranker.py --candidates ./candidates.jsonl --out ./red
 # Compute environment
 # ============================================================================
 compute:
-  platform: "MacBook Pro M2"                    # Or: "AWS EC2 c5.4xlarge", "Local Linux box", etc.
+  platform: "Windows PC"                    # Or: "AWS EC2 c5.4xlarge", "Local Linux box", etc.
   cpu_cores: 8                                  # Number of CPU cores used
   ram_gb: 16                                    # Available RAM in GB
-  python_version: "3.11.4"                      # python --version
-  os: "macOS 14.2"                              # Or "Ubuntu 22.04 LTS", etc.
+  python_version: "3.13.4"                      # python --version
+  os: "Windows 11"                              # Or "Ubuntu 22.04 LTS", etc.
   uses_gpu_for_inference: false                 # Must be false — see compute constraints
   has_network_during_ranking: false             # Must be false — no API calls during ranking
   pre_computation_required: false               # true if you pre-compute embeddings or train models offline
@@ -75,15 +75,15 @@ ai_usage_summary: |
 # Approach summary (optional but recommended)
 # ============================================================================
 methodology_summary: |
-  ≤200 word summary of your approach. Strongly recommended.
+  An engineered single-pass streaming pipeline evaluates 100K+ records under 100MB RAM. The framework processes profiles through a layered heuristic matrix:
 
-  Example:
-  "Rule-based ranker with explicit reasoning capture. Five scoring components
-  (skills, title+career, experience years, location, education) combined with
-  a multiplicative behavioral-signal modifier. The title component is the
-  decisive signal against keyword-stuffer traps; an endorsement-and-duration
-  trust multiplier on skills catches lazy keyword stuffing. Runtime is ~10
-  seconds for 50K candidates on CPU."
+  1. Adversarial Honeypot Defense: Applies strict mathematical reality constraints cross-referencing career lifespans against skill durations, graduation milestones, and zero-duration "expert" stuffing flags to isolate and instantly disqualify synthetic profiles.
+
+  2. Structural & Content Cross-Verification: Instead of relying on raw user-declared skill lists, the engine scans historical employment descriptions for production-oriented action verbs (e.g., deployed, scaled). It implements a custom consistency ratio to penalize keyword stuffers lacking historical evidence.
+
+  3. Multi-Factor Weighted Allocation: Balances candidate domain competence (45% role substance), compatibility bounds (35% target experience bands, prefix-safe title matches, location mapping), and platform availability signals (20% recruiter responsiveness, account validation, and login freshness modifiers).
+
+  Deterministic dual-key sorting ensures schema compliance and monotonic rank scoring across the final top-100 recommendation output.
 
 # ============================================================================
 # Declarations
